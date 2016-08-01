@@ -1,0 +1,47 @@
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+@import Photos;
+
+#define NOT                 !
+#define AND                 &&
+#define OR                  ||
+
+#define ARRAY_SIZE(array)   sizeof(array)/sizeof(array[0])
+
+#define APPLICATION         [UIApplication sharedApplication]
+#define DEVICE              [UIDevice currentDevice]
+#define SYSTEM_VERSION      DEVICE.systemVersion
+#define IMAGE_MANAGER       [PHCachingImageManager defaultManager]
+
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([SYSTEM_VERSION compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([SYSTEM_VERSION compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([SYSTEM_VERSION compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([SYSTEM_VERSION compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([SYSTEM_VERSION compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+#define TIMED_CALL(time, function)                                              \
+[NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(function:) userInfo:nil repeats:NO]
+#define NO_DELAY            0.1
+
+// some language mappings
+#define this self
+#define null nil
+
+#define STATIC_DECL(type,getName,setName)                                       \
++ (type) getName;                                                               \
++ (void) set ## setName:(type)getName
+
+#define STATIC_IMPL(type,getName,setName)                                       \
+static type getName;                                                            \
++ (type) getName { return getName; }                                            \
++ (void) set ## setName:(type)value { getName = value; }
+
+#define STATIC_DECL_READONLY(type,getName)                                      \
++ (type) getName
+
+#define STATIC_IMPL_READONLY(type,getName,value)                                \
+static type getName = value;                                                    \
++ (type) getName { return getName; }
+
+
