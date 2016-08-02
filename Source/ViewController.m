@@ -43,12 +43,16 @@ STATIC_IMPL_READONLY(ViewController*, sharedViewController, nil);
 - (void) pushView:(UIView*)view {
     if (editView == nil) {
         editView = view;
+        editView.frame = CGRectMake(0, 0, controlContainerView.frame.size.width, controlContainerView.frame.size.height);
         [controlContainerView addSubview:editView];
+        [APPLICATION setStatusBarHidden:YES];
+        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(popView) userInfo:null repeats:NO];
     }
 }
 
 - (void) popView {
     if (editView != nil) {
+        [APPLICATION setStatusBarHidden:NO];
         [editView removeFromSuperview];
         editView = nil;
     }
