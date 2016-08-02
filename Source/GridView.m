@@ -1,11 +1,12 @@
 #import "GridView.h"
 #import "ThumbnailRowView.h"
 #import "ThumbnailView.h"
+#import "ViewController.h"
 
 @implementation GridView
 
 STATIC_IMPL_READONLY(NSUInteger, thumbnailsPerPage, 0);
-STATIC_IMPL_READONLY(NSUInteger, maxThumbnailPages, 20);
+STATIC_IMPL_READONLY(NSUInteger, maxThumbnailPages, 10);
 STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
 
 @synthesize scrollContentsView = scrollContentsView;
@@ -14,14 +15,16 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
 
 - (id) initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame]) != null) {
+        // some basic initialization
         self.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.25 alpha:1.0];
         self.userInteractionEnabled = YES;
+        self.delegate = self;
+        lastContentOffset = self.contentOffset.y;
 
         // put a scroll contents view into place
         scrollContentsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        scrollContentsView.userInteractionEnabled = YES;
         [self addSubview:scrollContentsView];
-        self.delegate = self;
-        lastContentOffset = self.contentOffset.y;
         
         // some setup computations to set limits
         [ThumbnailRowView setupRows:frame];
@@ -30,16 +33,36 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
         thumbnailsPerPage = rowsPerPage * ThumbnailRowView.columnCount;
         queryLimit = thumbnailsPerPage * maxThumbnailPages;
         
-        [self refreshImageList];
+        // put in a tap gesture recognizer that doesn't swallow events
+        UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        tapRecognizer.cancelsTouchesInView = NO;
+        [self addGestureRecognizer:tapRecognizer];
         
-        //[NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(reportRequestCount:) userInfo:null repeats:YES];
+        // force a redraw
+        [self refreshImageList];
     }
     return self;
 }
 
-- (void) reportRequestCount:(id)sender {
-    NSLog (@"Request Count: %lu", (unsigned long)ThumbnailView.requestCount);
-    //[self updateScrollPosition];
+- (void) handleTap:(id)sender {
+    // now can I figure out what view got tapped?
+    UITapGestureRecognizer* tapRecognizer = sender;
+    CGPoint touchPoint = [tapRecognizer locationInView:self];
+    NSUInteger rowIndex = (touchPoint.y - ThumbnailRowView.rowSpacing) / ThumbnailRowView.totalRowHeight;
+    ThumbnailRowView* rowView = [scrollContentsView subviews][rowIndex];
+    ThumbnailView* thumbnailView = [rowView thumbnailAtX:touchPoint.x];
+    NSLog(@"Grid View Tapped on (%@)", thumbnailView.asset.description);
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    PHImageRequestOptions* requestOptions = [PHImageRequestOptions new];
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    requestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
+    requestOptions.networkAccessAllowed = YES;
+    [IMAGE_MANAGER requestImageForAsset:thumbnailView.asset targetSize:self.frame.size contentMode:PHImageContentModeAspectFit options:requestOptions resultHandler:^(UIImage* image, NSDictionary* result) {
+        imageView.image = image;
+    }];
+    [VIEW_CONTROLLER pushView:imageView];
 }
 
 - (void) refreshImageList {
@@ -51,8 +74,8 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
     NSDate* recent = [[NSDate date] dateByAddingTimeInterval:-14*24*60*60];
     PHFetchOptions* fetchOptions = [PHFetchOptions new];
     fetchOptions.predicate = [NSPredicate predicateWithFormat:@"creationDate >= %@", recent];
-    fetchOptions.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO] ];
-    fetchOptions.fetchLimit = queryLimit;
+    fetchOptions.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES] ];
+    //fetchOptions.fetchLimit = queryLimit;
     PHFetchResult* fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:fetchOptions];
     
     // process the fetch results into a viewing grid
@@ -61,7 +84,9 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
     CGFloat height = (ThumbnailRowView.totalRowHeight * rowCount) + ThumbnailRowView.rowSpacing;
     self.contentSize = CGSizeMake(self.frame.size.width, height);
     scrollContentsView.frame = CGRectMake(0, 0, self.frame.size.width, height);
-    
+    self.contentOffset = CGPointMake(0, height - self.frame.size.height);
+    //[self scrollRectToVisible:CGRectMake(self.contentSize.width - 1,scrollview.contentSize.height - 1, 1, 1) animated:YES];
+
     // loop over all of the rows
     for (NSUInteger i = 0; i < rowCount; ++i) {
         // set up the assets for this row
@@ -70,7 +95,7 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
             [assets addObject:fetchResult[j]];
         }
         
-        // create the thumbnail row view
+        // create the thumbnail row view, reverse order to match the photos app
         ThumbnailRowView* thumbnailRowView = [[ThumbnailRowView alloc] initAtRowIndex:i withAssets:assets];
         [scrollContentsView addSubview:thumbnailRowView];
     }

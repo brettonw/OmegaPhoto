@@ -1,8 +1,7 @@
-@interface ThumbnailView : UIImageView
+@interface ThumbnailView : UIImageView <UIGestureRecognizerDelegate>
 
 STATIC_DECL(CGSize, imageSize, ImageSize);
 STATIC_DECL_READONLY (CGFloat, iconSpacing);
-STATIC_DECL_READONLY (NSUInteger, requestCount);
 
 @property (nonatomic, assign) PHImageRequestID imageRequestId;
 @property (nonatomic, assign) NSUInteger callbackCount;

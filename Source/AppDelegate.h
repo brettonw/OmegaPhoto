@@ -1,7 +1,8 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+STATIC_DECL_READONLY(AppDelegate*, sharedAppDelegate);
+
 @property (strong, nonatomic) UIWindow *window;
-+ (AppDelegate*) sharedAppDelegate;
 
 @end
 

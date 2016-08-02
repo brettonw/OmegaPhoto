@@ -4,11 +4,16 @@
 
 @implementation ViewController
 
+STATIC_IMPL_READONLY(ViewController*, sharedViewController, nil);
+
 @synthesize baseView = baseView;
 @synthesize controlContainerView = controlContainerView;
+@synthesize editView = editView;
 
 - (void) loadView
 {
+    sharedViewController = self;
+    
     UIWindow*   window = APP_DELEGATE.window;
     CGRect      frame = window.frame;
     
@@ -33,6 +38,20 @@
     CGFloat headerHeight = 60.0;
     GridView*   gridView = [[GridView alloc]initWithFrame:CGRectMake(0, headerHeight, frame.size.width, frame.size.height - headerHeight)];
     [controlContainerView addSubview:gridView];
+}
+
+- (void) pushView:(UIView*)view {
+    if (editView == nil) {
+        editView = view;
+        [controlContainerView addSubview:editView];
+    }
+}
+
+- (void) popView {
+    if (editView != nil) {
+        [editView removeFromSuperview];
+        editView = nil;
+    }
 }
 
 -(void) didReceiveMemoryWarning {

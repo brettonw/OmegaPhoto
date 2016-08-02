@@ -5,7 +5,6 @@
 
 STATIC_IMPL(CGSize, imageSize, ImageSize);
 STATIC_IMPL_READONLY (CGFloat, iconSpacing, 6);
-STATIC_IMPL_READONLY (NSUInteger, requestCount, 0);
 
 @synthesize imageRequestId = imageRequestId;
 @synthesize callbackCount = callbackCount;
@@ -39,27 +38,6 @@ static PHImageRequestOptions* requestOptions;
     return self;
 }
 
-- (void) handleTap:(UITapGestureRecognizer*)gestureRecognizer {
-    /*
-     NSLog(@"Tapped");
-     ImageView* imageView = (ImageView*) gestureRecognizer.view;
-     
-     // try to fetch the actual item, including deadline
-     PHImageRequestOptions* tappedImageRequestOptions = [PHImageRequestOptions new];
-     tappedImageRequestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
-     tappedImageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-     tappedImageRequestOptions.networkAccessAllowed = YES;
-     tappedImageRequestOptions.synchronous = NO;
-     
-     imageView.imageRequestId = [IMAGE_MANAGER requestImageForAsset:imageView.asset targetSize:thumbnailSize contentMode:PHImageContentModeAspectFill options:tappedImageRequestOptions resultHandler:^(UIImage* image, NSDictionary* imageResult) {
-     BOOL cancel = [[imageResult valueForKey:PHImageCancelledKey] boolValue];
-     [self updateImageView:imageView withImage:image andCancel:cancel];
-     }];
-     */
-}
-
-#define CLEANUP_REQUEST imageRequestId = 0; --requestCount
-
 #define CAP_REQUESTS    0
 
 - (BOOL) show {
@@ -69,25 +47,24 @@ static PHImageRequestOptions* requestOptions;
 #if CAP_REQUESTS
         if (requestCount > ViewController.thumbnailsPerPage) {
             NSLog(@"PUNT (%lu)", (unsigned long)requestCount);
-            self.backgroundColor = [UIColor blueColor];
+            self.backgroundColor = [UIColor colorWithRed:68.0/255.0 green:159.0/255.0 blue:243.0/255.0 alpha:0.75];// 68,159,243
             return false;
         }
 #endif
         // add an image request, save the request id as the imageRequestId
         showing = YES;
         callbackCount = 0;
-        ++requestCount;
         imageRequestId = [IMAGE_MANAGER requestImageForAsset:asset targetSize:imageSize contentMode:PHImageContentModeAspectFill options:requestOptions resultHandler:^(UIImage* image, NSDictionary* result) {
             // process cancellation
             if ([[result valueForKey:PHImageCancelledKey] boolValue]) {
-                CLEANUP_REQUEST;
+                imageRequestId = 0;
                 return;
             }
             
             // process error
             if ([[result valueForKey:PHImageErrorKey] boolValue]) {
                 NSLog(@"ERROR");
-                CLEANUP_REQUEST;
+                imageRequestId = 0;
                 return;
             }
             
@@ -101,15 +78,18 @@ static PHImageRequestOptions* requestOptions;
             // either a high quality replacement, or nil image (if it needs to be down-
             // loaded from the cloud)
             switch (callbackCount) {
-                case 0: {
+                case 0:
                     // first call, low quality
-                    // XXX this is a temporary debugging highlight
-                    self.backgroundColor = [UIColor colorWithRed:68.0/255.0 green:159.0/255.0 blue:243.0/255.0 alpha:0.75];// 68,159,243
-                    UIView* first = [[UIView alloc] initWithFrame:CGRectMake(iconSpacing, iconSpacing, 10, 10)];
-                    first.backgroundColor = [UIColor greenColor];
-                    [self addSubview:first];
+                    if ([[result valueForKey:PHImageResultIsDegradedKey] boolValue]) {
+                        // XXX this is a temporary debugging highlight
+                        self.backgroundColor = [UIColor blueColor];
+                        UIView* first = [[UIView alloc] initWithFrame:CGRectMake(iconSpacing, iconSpacing, 10, 10)];
+                        first.backgroundColor = [UIColor greenColor];
+                        [self addSubview:first];
+                    } else {
+                        NSLog (@"Does this ever happen?");
+                    }
                     break;
-                }
                     
                 case 1: {
                     // this is the final state, clear out any subviews
@@ -129,7 +109,7 @@ static PHImageRequestOptions* requestOptions;
                     }
                     
                     // clear the request id, it won't happen again
-                    CLEANUP_REQUEST;
+                    imageRequestId = 0;
                     break;
                 }
             }

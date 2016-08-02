@@ -3,11 +3,11 @@
 
 @implementation AppDelegate
 
-static AppDelegate* singleton = nil;
+STATIC_IMPL_READONLY(AppDelegate*, sharedAppDelegate, nil);
 
 - (id)init {
-    singleton = [super init];
-    return singleton;
+    sharedAppDelegate = [super init];
+    return sharedAppDelegate;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -16,10 +16,6 @@ static AppDelegate* singleton = nil;
     window.backgroundColor = [UIColor redColor];
     [window makeKeyAndVisible];
     return YES;
-}
-
-+ (AppDelegate*) sharedAppDelegate {
-    return singleton;
 }
 
 @end
