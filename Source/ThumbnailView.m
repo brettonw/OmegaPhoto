@@ -58,12 +58,14 @@ static PHImageRequestOptions* requestOptions;
      */
 }
 
+#define CLEANUP_REQUEST imageRequestId = 0; --requestCount
+
 #define CAP_REQUESTS    0
 
 - (BOOL) show {
     // the item should be visible, check to see if there is no
     // image, or no image query on it
-    if ((! showing) && (imageRequestId == 0)) {
+    if (! showing) {
 #if CAP_REQUESTS
         if (requestCount > ViewController.thumbnailsPerPage) {
             NSLog(@"PUNT (%lu)", (unsigned long)requestCount);
@@ -78,17 +80,14 @@ static PHImageRequestOptions* requestOptions;
         imageRequestId = [IMAGE_MANAGER requestImageForAsset:asset targetSize:imageSize contentMode:PHImageContentModeAspectFill options:requestOptions resultHandler:^(UIImage* image, NSDictionary* result) {
             // process cancellation
             if ([[result valueForKey:PHImageCancelledKey] boolValue]) {
-                NSLog(@"CANCEL");
-                imageRequestId = 0;
-                --requestCount;
+                CLEANUP_REQUEST;
                 return;
             }
             
-            // process cancellation
+            // process error
             if ([[result valueForKey:PHImageErrorKey] boolValue]) {
                 NSLog(@"ERROR");
-                imageRequestId = 0;
-                --requestCount;
+                CLEANUP_REQUEST;
                 return;
             }
             
@@ -130,8 +129,7 @@ static PHImageRequestOptions* requestOptions;
                     }
                     
                     // clear the request id, it won't happen again
-                    imageRequestId = 0;
-                    --requestCount;
+                    CLEANUP_REQUEST;
                     break;
                 }
             }
