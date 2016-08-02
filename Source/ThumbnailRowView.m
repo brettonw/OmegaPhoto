@@ -4,9 +4,9 @@
 @implementation ThumbnailRowView
 
 STATIC_IMPL(CGFloat, rowHeight, RowHeight);
-STATIC_IMPL_READONLY(NSUInteger,columnCount, 3);
-STATIC_IMPL_READONLY(CGFloat,columnSpacing, 3);
-STATIC_IMPL_READONLY(CGFloat,rowSpacing, 3);
+STATIC_IMPL_READONLY(NSUInteger,columnCount, 4);
+STATIC_IMPL_READONLY(CGFloat,columnSpacing, 2);
+STATIC_IMPL_READONLY(CGFloat,rowSpacing, 2);
 
 + (CGFloat) totalRowHeight {
     return rowHeight + rowSpacing;

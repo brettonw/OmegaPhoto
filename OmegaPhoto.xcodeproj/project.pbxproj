@@ -15,6 +15,7 @@
 		6414480F1D4F176C00F6B6AB /* ThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6414480E1D4F176C00F6B6AB /* ThumbnailView.m */; };
 		641448121D4F902700F6B6AB /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448111D4F902700F6B6AB /* Test.m */; };
 		641448151D4F996300F6B6AB /* ThumbnailRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448141D4F996300F6B6AB /* ThumbnailRowView.m */; };
+		641448181D5031D900F6B6AB /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448171D5031D900F6B6AB /* GridView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,8 @@
 		641448111D4F902700F6B6AB /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		641448131D4F996300F6B6AB /* ThumbnailRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailRowView.h; sourceTree = "<group>"; };
 		641448141D4F996300F6B6AB /* ThumbnailRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailRowView.m; sourceTree = "<group>"; };
+		641448161D5031D900F6B6AB /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
+		641448171D5031D900F6B6AB /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,8 @@
 				6414480E1D4F176C00F6B6AB /* ThumbnailView.m */,
 				5AC17C3448809CAF3A9B0831 /* ViewController.h */,
 				5AC1778BC5A786E3A12654E5 /* ViewController.m */,
+				641448161D5031D900F6B6AB /* GridView.h */,
+				641448171D5031D900F6B6AB /* GridView.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -173,6 +178,7 @@
 				641448121D4F902700F6B6AB /* Test.m in Sources */,
 				5AC17D08EC79084910A24403 /* AppDelegate.m in Sources */,
 				5AC17756D5FE8E04BA6816D2 /* ViewController.m in Sources */,
+				641448181D5031D900F6B6AB /* GridView.m in Sources */,
 				641448151D4F996300F6B6AB /* ThumbnailRowView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

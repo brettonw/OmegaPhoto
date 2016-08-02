@@ -58,15 +58,19 @@ static PHImageRequestOptions* requestOptions;
      */
 }
 
+#define CAP_REQUESTS    0
+
 - (BOOL) show {
     // the item should be visible, check to see if there is no
     // image, or no image query on it
     if ((! showing) && (imageRequestId == 0)) {
+#if CAP_REQUESTS
         if (requestCount > ViewController.thumbnailsPerPage) {
             NSLog(@"PUNT (%lu)", (unsigned long)requestCount);
             self.backgroundColor = [UIColor blueColor];
             return false;
         }
+#endif
         // add an image request, save the request id as the imageRequestId
         showing = YES;
         callbackCount = 0;
@@ -90,7 +94,7 @@ static PHImageRequestOptions* requestOptions;
             
             // if we are being given an image, take it
             if (image != nil) {
-                //self.image = image;
+                self.image = image;
             }
             
             // this function gets called twice... the first time is a synchronous call
