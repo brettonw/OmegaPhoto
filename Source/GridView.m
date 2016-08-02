@@ -44,14 +44,18 @@ STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
     return self;
 }
 
+- (ThumbnailView*) thumbnailAtPoint:(CGPoint)pt {
+    NSUInteger rowIndex = (pt.y - ThumbnailRowView.rowSpacing) / ThumbnailRowView.totalRowHeight;
+    ThumbnailRowView* trv = [scrollContentsView subviews][rowIndex];
+    return [trv thumbnailAtX:pt.x];
+}
+
 - (void) handleTap:(id)sender {
     // now can I figure out what view got tapped?
     UITapGestureRecognizer* tapRecognizer = sender;
     CGPoint touchPoint = [tapRecognizer locationInView:self];
-    NSUInteger rowIndex = (touchPoint.y - ThumbnailRowView.rowSpacing) / ThumbnailRowView.totalRowHeight;
-    ThumbnailRowView* rowView = [scrollContentsView subviews][rowIndex];
-    ThumbnailView* thumbnailView = [rowView thumbnailAtX:touchPoint.x];
-    NSLog(@"Grid View Tapped on (%@)", thumbnailView.asset.description);
+    ThumbnailView* thumbnailView = [self thumbnailAtPoint:touchPoint];
+    //    NSLog(@"Grid View Tapped on (%@)", thumbnailView.asset.description);
     
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     imageView.contentMode = UIViewContentModeScaleAspectFit;

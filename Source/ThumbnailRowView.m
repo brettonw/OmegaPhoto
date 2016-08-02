@@ -9,7 +9,6 @@ STATIC_IMPL_READONLY(CGFloat,rowSpacing, 2);
     return rowHeight + rowSpacing;
 }
 
-
 STATIC_IMPL_READONLY(CGFloat,columnWidth, 0);
 STATIC_IMPL_READONLY(CGFloat,columnSpacing, 2);
 + (CGFloat) totalColumnWidth {
