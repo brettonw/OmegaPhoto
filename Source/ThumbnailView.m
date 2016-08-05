@@ -1,15 +1,24 @@
 #import "ThumbnailView.h"
 #import "ViewController.h"
 
+@interface ThumbnailView ()
+
+PROPERTY_PRIMITIVE_DECL(PHImageRequestID, imageRequestId);
+PROPERTY_PRIMITIVE_DECL(NSUInteger, callbackCount);
+PROPERTY_PRIMITIVE_DECL(BOOL, showing);
+
+@end
+
 @implementation ThumbnailView
 
 STATIC_IMPL(CGSize, imageSize, ImageSize);
 STATIC_IMPL_READONLY (CGFloat, iconSpacing, 6);
 
-@synthesize imageRequestId = imageRequestId;
-@synthesize callbackCount = callbackCount;
-@synthesize showing = showing;
-@synthesize asset = asset;
+PROPERTY_IMPL(imageRequestId);
+PROPERTY_IMPL(callbackCount);
+PROPERTY_IMPL(showing);
+
+PROPERTY_IMPL(asset);
 
 static UIImage* cloudIcon;
 static PHImageRequestOptions* requestOptions;

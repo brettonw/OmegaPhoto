@@ -3,18 +3,26 @@
 #import "ThumbnailView.h"
 #import "ViewController.h"
 
+@interface GridView ()
+
+PROPERTY_OBJECT_DECL(UIView, scrollContentsView);
+PROPERTY_PRIMITIVE_DECL(NSUInteger, queryLimit);
+PROPERTY_PRIMITIVE_DECL(CGFloat, lastContentOffset);
+
+@end
+
 @implementation GridView
 
 STATIC_IMPL_READONLY(NSUInteger, thumbnailsPerPage, 0);
 STATIC_IMPL_READONLY(NSUInteger, maxThumbnailPages, 10);
 STATIC_IMPL_READONLY(NSUInteger, rowsPerPage, 0);
 
-@synthesize scrollContentsView = scrollContentsView;
-@synthesize queryLimit = queryLimit;
-@synthesize lastContentOffset = lastContentOffset;
+PROPERTY_IMPL(scrollContentsView);
+PROPERTY_IMPL(queryLimit);
+PROPERTY_IMPL(lastContentOffset);
 
 - (id) initWithFrame:(CGRect)frame {
-    if ((self = [super initWithFrame:frame]) != null) {
+    if ((self = [super initWithFrame:frame]) != nil) {
         // some basic initialization
         self.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.25 alpha:1.0];
         self.userInteractionEnabled = YES;

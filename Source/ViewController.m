@@ -2,13 +2,23 @@
 #import "AppDelegate.h"
 #import "GridView.h"
 
+@interface ViewController ()
+
+PROPERTY_OBJECT_DECL(NSMutableArray, viewStack);
+PROPERTY_OBJECT_DECL(UIView, editView);
+PROPERTY_OBJECT_DECL(GridView, gridView);
+
+@end
+
 @implementation ViewController
 
 STATIC_IMPL_READONLY(ViewController*, sharedViewController, nil);
 
-@synthesize baseView = baseView;
-@synthesize controlContainerView = controlContainerView;
-@synthesize editView = editView;
+PROPERTY_IMPL(baseView);
+PROPERTY_IMPL(containerView);
+PROPERTY_IMPL(viewStack);
+PROPERTY_IMPL(gridView);
+PROPERTY_IMPL(editView);
 
 - (void) loadView
 {
@@ -29,24 +39,27 @@ STATIC_IMPL_READONLY(ViewController*, sharedViewController, nil);
     [self.view addSubview:baseView];
     
     // put down a view to contain the controls
-    controlContainerView = [[UIView alloc] initWithFrame:frame];
-    controlContainerView.backgroundColor = [UIColor clearColor];
-    controlContainerView.userInteractionEnabled = YES;
-    [self.view addSubview:controlContainerView];
+    containerView = [[UIView alloc] initWithFrame:frame];
+    containerView.backgroundColor = [UIColor clearColor];
+    containerView.userInteractionEnabled = YES;
+    [self.view addSubview:containerView];
+    
+    // create the view stack
+    viewStack = [NSMutableArray arrayWithCapacity:3];
     
     // put a scroll view into place
     CGFloat headerHeight = 60.0;
-    GridView*   gridView = [[GridView alloc]initWithFrame:CGRectMake(0, headerHeight, frame.size.width, frame.size.height - headerHeight)];
-    [controlContainerView addSubview:gridView];
+    gridView = [[GridView alloc]initWithFrame:CGRectMake(0, headerHeight, frame.size.width, frame.size.height - headerHeight)];
+    [containerView addSubview:gridView];
 }
 
 - (void) pushView:(UIView*)view {
     if (editView == nil) {
         editView = view;
-        editView.frame = CGRectMake(0, 0, controlContainerView.frame.size.width, controlContainerView.frame.size.height);
-        [controlContainerView addSubview:editView];
+        editView.frame = CGRectMake(0, 0, containerView.frame.size.width, containerView.frame.size.height);
+        [containerView addSubview:editView];
         [APPLICATION setStatusBarHidden:YES];
-        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(popView) userInfo:null repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(popView) userInfo:nil repeats:NO];
     }
 }
 

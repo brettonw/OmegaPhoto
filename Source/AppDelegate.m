@@ -1,9 +1,13 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 
+#import "Test.h"
+
 @implementation AppDelegate
 
 STATIC_IMPL_READONLY(AppDelegate*, sharedAppDelegate, nil);
+
+PROPERTY_IMPL(window);
 
 - (id)init {
     sharedAppDelegate = [super init];
@@ -13,10 +17,14 @@ STATIC_IMPL_READONLY(AppDelegate*, sharedAppDelegate, nil);
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [application setStatusBarHidden:NO];
 
-    UIWindow*   window = self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = [ViewController new];
     window.backgroundColor = [UIColor redColor];
     [window makeKeyAndVisible];
+    
+    // run the tests
+    [[Test new] testResultHandlerBehavior];
+    
     return YES;
 }
 

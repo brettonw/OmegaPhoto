@@ -16,6 +16,8 @@
 		641448121D4F902700F6B6AB /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448111D4F902700F6B6AB /* Test.m */; };
 		641448151D4F996300F6B6AB /* ThumbnailRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448141D4F996300F6B6AB /* ThumbnailRowView.m */; };
 		641448181D5031D900F6B6AB /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 641448171D5031D900F6B6AB /* GridView.m */; };
+		647F3DDC1D55315600B15F31 /* LightBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F3DDB1D55315600B15F31 /* LightBoxView.m */; };
+		647F3DE31D5539F400B15F31 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = 647F3DE21D5539F400B15F31 /* View.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,10 @@
 		641448141D4F996300F6B6AB /* ThumbnailRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailRowView.m; sourceTree = "<group>"; };
 		641448161D5031D900F6B6AB /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
 		641448171D5031D900F6B6AB /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
+		647F3DDA1D55315600B15F31 /* LightBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightBoxView.h; sourceTree = "<group>"; };
+		647F3DDB1D55315600B15F31 /* LightBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightBoxView.m; sourceTree = "<group>"; };
+		647F3DE11D5539F400B15F31 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		647F3DE21D5539F400B15F31 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = View.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,21 +95,65 @@
 		5AC17E8951473DE6D5FDB86F /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				5AC17BD98D9DC38513045023 /* AppDelegate.h */,
-				5AC1706083C1A75330A4B980 /* AppDelegate.m */,
-				6401F5D21D4C11B2008DF96C /* Precompile.pch */,
-				641448101D4F902700F6B6AB /* Test.h */,
-				641448111D4F902700F6B6AB /* Test.m */,
+				647F3DDE1D5533AE00B15F31 /* Core */,
+				647F3DE01D5533D200B15F31 /* EditView */,
+				647F3DD91D552FD100B15F31 /* GridView */,
+				647F3DDF1D5533C900B15F31 /* LightBoxView */,
+				647F3DDD1D55339300B15F31 /* Test */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		647F3DD91D552FD100B15F31 /* GridView */ = {
+			isa = PBXGroup;
+			children = (
 				641448131D4F996300F6B6AB /* ThumbnailRowView.h */,
 				641448141D4F996300F6B6AB /* ThumbnailRowView.m */,
 				6414480D1D4F176C00F6B6AB /* ThumbnailView.h */,
 				6414480E1D4F176C00F6B6AB /* ThumbnailView.m */,
-				5AC17C3448809CAF3A9B0831 /* ViewController.h */,
-				5AC1778BC5A786E3A12654E5 /* ViewController.m */,
 				641448161D5031D900F6B6AB /* GridView.h */,
 				641448171D5031D900F6B6AB /* GridView.m */,
 			);
-			path = Source;
+			name = GridView;
+			sourceTree = "<group>";
+		};
+		647F3DDD1D55339300B15F31 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				641448101D4F902700F6B6AB /* Test.h */,
+				641448111D4F902700F6B6AB /* Test.m */,
+			);
+			name = Test;
+			sourceTree = "<group>";
+		};
+		647F3DDE1D5533AE00B15F31 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5AC17BD98D9DC38513045023 /* AppDelegate.h */,
+				5AC1706083C1A75330A4B980 /* AppDelegate.m */,
+				6401F5D21D4C11B2008DF96C /* Precompile.pch */,
+				5AC17C3448809CAF3A9B0831 /* ViewController.h */,
+				5AC1778BC5A786E3A12654E5 /* ViewController.m */,
+				647F3DE11D5539F400B15F31 /* View.h */,
+				647F3DE21D5539F400B15F31 /* View.m */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		647F3DDF1D5533C900B15F31 /* LightBoxView */ = {
+			isa = PBXGroup;
+			children = (
+				647F3DDA1D55315600B15F31 /* LightBoxView.h */,
+				647F3DDB1D55315600B15F31 /* LightBoxView.m */,
+			);
+			name = LightBoxView;
+			sourceTree = "<group>";
+		};
+		647F3DE01D5533D200B15F31 /* EditView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = EditView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +227,8 @@
 				6414480F1D4F176C00F6B6AB /* ThumbnailView.m in Sources */,
 				641448121D4F902700F6B6AB /* Test.m in Sources */,
 				5AC17D08EC79084910A24403 /* AppDelegate.m in Sources */,
+				647F3DDC1D55315600B15F31 /* LightBoxView.m in Sources */,
+				647F3DE31D5539F400B15F31 /* View.m in Sources */,
 				5AC17756D5FE8E04BA6816D2 /* ViewController.m in Sources */,
 				641448181D5031D900F6B6AB /* GridView.m in Sources */,
 				641448151D4F996300F6B6AB /* ThumbnailRowView.m in Sources */,

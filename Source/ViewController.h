@@ -1,10 +1,11 @@
+#import "GridView.h"
+
 @interface ViewController : UIViewController<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 STATIC_DECL_READONLY(ViewController*, sharedViewController);
 
-@property (nonatomic, strong) UIView* baseView;
-@property (nonatomic, strong) UIView* controlContainerView;
-@property (nonatomic, strong) UIView* editView;
+PROPERTY_OBJECT_DECL(UIView, baseView);
+PROPERTY_OBJECT_DECL(UIView, containerView);
 
 - (void) pushView:(UIView*)view;
 - (void) popView;

@@ -30,8 +30,8 @@ STATIC_IMPL_READONLY(NSUInteger,columnCount, 4);
 
 static CGFloat displayWidth;
 
-@synthesize showing = showing;
-@synthesize rowIndex = rowIndex;
+PROPERTY_IMPL(showing);
+PROPERTY_IMPL(rowIndex);
 
 - (id) initAtRowIndex:(NSUInteger)rowIndexIn withAssets:(NSArray*)assets {
     rowIndex = rowIndexIn;

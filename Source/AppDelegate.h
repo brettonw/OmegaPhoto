@@ -2,7 +2,7 @@
 
 STATIC_DECL_READONLY(AppDelegate*, sharedAppDelegate);
 
-@property (strong, nonatomic) UIWindow *window;
+PROPERTY_OBJECT_DECL(UIWindow, window);
 
 @end
 

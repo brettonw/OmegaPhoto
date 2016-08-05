@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+
 @import Photos;
 
 #define NOT                 !
@@ -25,8 +26,12 @@
 #define NO_DELAY            0.1
 
 // some language mappings
-#define this self
-#define null nil
+//#define this self
+//#define null nil
+
+#define PROPERTY_OBJECT_DECL(type, name) @property (nonatomic, strong) type* name
+#define PROPERTY_PRIMITIVE_DECL(type, name) @property (nonatomic, assign) type name
+#define PROPERTY_IMPL(name) @synthesize name=name
 
 #define STATIC_DECL(type,getName,setName)                                       \
 + (type) getName;                                                               \

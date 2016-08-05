@@ -8,16 +8,15 @@ void msg (NSString* name, BOOL condition) {
 }
 
 - (void) testResultHandlerBehaviorForAsset:(PHAsset*)asset withId:(NSUInteger)id andOptions:(PHImageRequestOptions*)options {
-    ThumbnailView* thumbnailView = [ThumbnailView new];
     CGSize targetSize = CGSizeMake(100, 100);
-    thumbnailView.callbackCount = 0;
-    thumbnailView.imageRequestId = [IMAGE_MANAGER requestImageForAsset:asset targetSize:targetSize contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage* image, NSDictionary* result) {
+    __block NSUInteger callbackCount = 0;
+    PHImageRequestID imageRequestId = [IMAGE_MANAGER requestImageForAsset:asset targetSize:targetSize contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage* image, NSDictionary* result) {
         NSLog (@"****************************");                                    \
         NSLog(@"RESULT (ID=%lu)", (unsigned long)id);
         // print out some local information
         NSLog(@"Has Image: %@", (image != nil) ? @"YES" : @"NO:");
-        NSLog(@"Has Image Request ID: %@", (thumbnailView.imageRequestId != 0) ? @"YES" : @"NO:");
-        NSLog(@"Callback Counter: %lu", (unsigned long)thumbnailView.callbackCount);
+        NSLog(@"Has Image Request ID: %@", (imageRequestId != 0) ? @"YES" : @"NO:");
+        NSLog(@"Callback Counter: %lu", (unsigned long)callbackCount);
         
         // print out the result contents
         for(NSString *key in [result allKeys]) {
@@ -25,7 +24,7 @@ void msg (NSString* name, BOOL condition) {
         }
         
         // update the receiver
-        thumbnailView.callbackCount++;
+        callbackCount++;
     }];
 }
 

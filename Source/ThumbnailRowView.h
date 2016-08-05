@@ -14,8 +14,8 @@ STATIC_DECL_READONLY(NSUInteger,columnCount);
 
 + (void) setupRows:(CGRect)frame;
 
-@property (nonatomic, assign) BOOL showing;
-@property (nonatomic, assign) NSUInteger rowIndex;
+PROPERTY_PRIMITIVE_DECL(BOOL, showing);
+PROPERTY_PRIMITIVE_DECL(NSUInteger, rowIndex);
 
 - (id) initAtRowIndex:(NSUInteger)rowIndex withAssets:(NSArray*)assets;
 - (BOOL) isVisibleBetween:(CGFloat)scrollViewBottom and:(CGFloat)scrollViewTop;
