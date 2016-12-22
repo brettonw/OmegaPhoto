@@ -6,4 +6,8 @@
 - (void) show;
 - (void) hide;
 
+#define FADE_ANIMATION_TIME 0.5
++ (void) fadeIn:(UIView*)view;
++ (void) fadeOut:(UIView*)view;
+
 @end

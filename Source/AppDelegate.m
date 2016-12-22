@@ -15,8 +15,6 @@ PROPERTY_IMPL(window);
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [application setStatusBarHidden:NO];
-
     window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     window.rootViewController = [ViewController new];
     window.backgroundColor = [UIColor redColor];

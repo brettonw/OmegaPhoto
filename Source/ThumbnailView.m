@@ -23,7 +23,6 @@ PROPERTY_IMPL(asset);
 static UIImage* cloudIcon;
 static PHImageRequestOptions* requestOptions;
 
-
 + (void) initialize {
     // grab the cloud icon
     cloudIcon = [UIImage imageNamed:@"iCloud@2x.png"];

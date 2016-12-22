@@ -7,6 +7,7 @@
 PROPERTY_OBJECT_DECL(NSMutableArray, viewStack);
 PROPERTY_OBJECT_DECL(UIView, editView);
 PROPERTY_OBJECT_DECL(GridView, gridView);
+PROPERTY_PRIMITIVE_DECL(BOOL, hideStatusBar);
 
 @end
 
@@ -19,10 +20,14 @@ PROPERTY_IMPL(containerView);
 PROPERTY_IMPL(viewStack);
 PROPERTY_IMPL(gridView);
 PROPERTY_IMPL(editView);
+PROPERTY_IMPL(hideStatusBar);
 
 - (void) loadView
 {
     sharedViewController = self;
+    
+    // default to showing the status bar
+    hideStatusBar = NO;
     
     UIWindow*   window = APP_DELEGATE.window;
     CGRect      frame = window.frame;
@@ -58,17 +63,27 @@ PROPERTY_IMPL(editView);
         editView = view;
         editView.frame = CGRectMake(0, 0, containerView.frame.size.width, containerView.frame.size.height);
         [containerView addSubview:editView];
-        [APPLICATION setStatusBarHidden:YES];
+        self.prefersStatusBarHidden = YES;
         [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(popView) userInfo:nil repeats:NO];
     }
 }
 
 - (void) popView {
     if (editView != nil) {
-        [APPLICATION setStatusBarHidden:NO];
+        self.prefersStatusBarHidden = NO;
         [editView removeFromSuperview];
         editView = nil;
     }
+}
+
+- (BOOL) prefersStatusBarHidden {
+    // override the default behavior so that I can control it...
+    return hideStatusBar;
+}
+
+- (void) setPrefersStatusBarHidden:(BOOL)hide {
+    hideStatusBar = hide;
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 -(void) didReceiveMemoryWarning {
